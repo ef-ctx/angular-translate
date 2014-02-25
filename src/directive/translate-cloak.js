@@ -15,14 +15,16 @@ angular.module('pascalprecht.translate')
  *
  * @param {string=} translate-cloak No string required
  */
-.directive('translateCloak', ['$rootScope', '$translate', function ($rootScope, $translate) {
-
-  return {
-    compile: function (tElement) {
-      $rootScope.$on('$translateLoadingSuccess', function () {
-        tElement.removeClass($translate.cloakClassName());
-      });
-      tElement.addClass($translate.cloakClassName());
-    }
-  };
-}]);
+.directive('translateCloak', ['$rootScope', '$translate',
+	function($rootScope, $translate) {
+		'use strict';
+		return {
+			compile: function(tElement) {
+				$rootScope.$on('$translateLoadingSuccess', function() {
+					tElement.removeClass($translate.cloakClassName());
+				});
+				tElement.addClass($translate.cloakClassName());
+			}
+		};
+	}
+]);

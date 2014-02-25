@@ -1,22 +1,24 @@
-describe('pascalprecht.translate', function () {
+describe('pascalprecht.translate', function() {
+	'use strict';
 
-  var module,
-      deps;
 
-  var hasModule = function (m) {
-    return deps.indexOf(m) >= 0;
-  };
+	var module,
+		deps;
 
-  beforeEach(function () {
-    module = angular.module('pascalprecht.translate');
-    deps = module.value('pascalprecht.translate').requires;
-  });
+	var hasModule = function(m) {
+		return deps.indexOf(m) >= 0;
+	};
 
-  it('should be registered', function () {
-    expect(module).not.toEqual(null);
-  });
+	beforeEach(function() {
+		module = angular.module('pascalprecht.translate');
+		deps = module.value('pascalprecht.translate').requires;
+	});
 
-  it('should have angular dependency', function () {
-    expect(hasModule('ng')).toBe(true);
-  });
+	it('should be registered', function() {
+		expect(module).not.toEqual(null);
+	});
+
+	it('should have angular dependency', function() {
+		expect(hasModule('ng')).toBe(true);
+	});
 });
