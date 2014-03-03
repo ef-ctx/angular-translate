@@ -1,4 +1,4 @@
-angular.module('pascalprecht.translate')
+ngTranslate
 
 .constant('TRANSLATE_MF_INTERPOLATION_CACHE', '$translateMessageFormatInterpolation')
 
@@ -13,12 +13,13 @@ angular.module('pascalprecht.translate')
  * @return {object} $translateInterpolator Interpolator service
  */
 .factory('$translateMessageFormatInterpolation', function($cacheFactory, TRANSLATE_MF_INTERPOLATION_CACHE) {
+	'use strict';
 
-	var $translateInterpolator = {};
-	$cache = $cacheFactory.get(TRANSLATE_MF_INTERPOLATION_CACHE),
-	// instantiate with default locale (which is 'en')
-	$mf = new MessageFormat(),
-	$identifier = 'messageformat';
+	var $translateInterpolator = {},
+		$cache = $cacheFactory.get(TRANSLATE_MF_INTERPOLATION_CACHE),
+		// instantiate with default locale (which is 'en')
+		$mf = new MessageFormat(),
+		$identifier = 'messageformat';
 
 	if (!$cache) {
 		// create cache if it doesn't exist already

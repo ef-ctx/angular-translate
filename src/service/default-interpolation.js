@@ -1,3 +1,4 @@
+ngTranslate
 /**
  * @ngdoc object
  * @name pascalprecht.translate.$translateDefaultInterpolation
@@ -8,9 +9,9 @@
  *
  * @return {object} $translateInterpolator Interpolator service
  */
-angular.module('pascalprecht.translate').factory('$translateDefaultInterpolation', ['$interpolate',
+.factory('$translateDefaultInterpolation', ['$interpolate',
 	function($interpolate) {
-		'use strict';
+        'use strict';
 
 		var $translateInterpolator = {},
 			$locale,

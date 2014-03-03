@@ -1,5 +1,4 @@
-angular.module('pascalprecht.translate')
-
+ngTranslate
 /**
  * @ngdoc object
  * @name pascalprecht.translate.$translateMissingTranslationHandlerLog
@@ -13,7 +12,7 @@ angular.module('pascalprecht.translate')
  */
 .factory('$translateMissingTranslationHandlerLog', ['$log',
 	function($log) {
-		'use strict';
+        'use strict';
 		return function(translationId) {
 			$log.warn('Translation for ' + translationId + ' doesn\'t exist');
 		};

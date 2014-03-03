@@ -1,3 +1,6 @@
+(function() {
+'use strict';
+
 /**
  * @ngdoc overview
  * @name pascalprecht.translate
@@ -8,29 +11,105 @@
 var ngTranslate = angular.module('pascalprecht.translate', ['ng']);
 
 
-ngTranslate.run([
-	'$translate',
-	function($translate) {
-		'use strict';
+ngTranslate
+.constant('$STORAGE_KEY', 'NG_TRANSLATE_LANG_KEY');
 
-		var key = $translate.storageKey(),
-			storage = $translate.storage();
 
-		if (storage) {
-			if (!storage.get(key)) {
-				if (angular.isString($translate.preferredLanguage())) {
-					$translate.use($translate.preferredLanguage());
-				} else {
-					storage.set(key, $translate.use());
+ngTranslate
+/**
+ * @ngdoc object
+ * @name pascalprecht.translate.$translateDefaultInterpolation
+ * @requires $interpolate
+ *
+ * @description
+ * Uses angular's `$interpolate` services to interpolate strings against some values.
+ *
+ * @return {object} $translateInterpolator Interpolator service
+ */
+.factory('$translateDefaultInterpolation', ['$interpolate',
+	function($interpolate) {
+        		var $translateInterpolator = {},
+			$locale,
+			$identifier = 'default',
+			$sanitizeValueStrategy = null,
+			// map of all sanitize strategies
+			sanitizeValueStrategies = {
+				escaped: function(params) {
+					var result = {};
+					for (var key in params) {
+						if (params.hasOwnProperty(key)) {
+							result[key] = angular.element('<div></div>').text(params[key]).html();
+						}
+					}
+					return result;
 				}
+			};
+
+		var sanitizeParams = function(params) {
+			var result;
+			if (angular.isFunction(sanitizeValueStrategies[$sanitizeValueStrategy])) {
+				result = sanitizeValueStrategies[$sanitizeValueStrategy](params);
 			} else {
-				$translate.use(storage.get(key));
+				result = params;
 			}
-		} else if (angular.isString($translate.preferredLanguage())) {
-			$translate.use($translate.preferredLanguage());
-		}
+			return result;
+		};
+
+		/**
+		 * @ngdoc function
+		 * @name pascalprecht.translate.$translateDefaultInterpolation#setLocale
+		 * @methodOf pascalprecht.translate.$translateDefaultInterpolation
+		 *
+		 * @description
+		 * Sets current locale (this is currently not use in this interpolation).
+		 *
+		 * @param {string} locale Language key or locale.
+		 */
+		$translateInterpolator.setLocale = function(locale) {
+			$locale = locale;
+		};
+
+		/**
+		 * @ngdoc function
+		 * @name pascalprecht.translate.$translateDefaultInterpolation#getInterpolationIdentifier
+		 * @methodOf pascalprecht.translate.$translateDefaultInterpolation
+		 *
+		 * @description
+		 * Returns an identifier for this interpolation service.
+		 *
+		 * @returns {string} $identifier
+		 */
+		$translateInterpolator.getInterpolationIdentifier = function() {
+			return $identifier;
+		};
+
+		$translateInterpolator.useSanitizeValueStrategy = function(value) {
+			$sanitizeValueStrategy = value;
+			return this;
+		};
+
+		/**
+		 * @ngdoc function
+		 * @name pascalprecht.translate.$translateDefaultInterpolation#interpolate
+		 * @methodOf pascalprecht.translate.$translateDefaultInterpolation
+		 *
+		 * @description
+		 * Interpolates given string agains given interpolate params using angulars
+		 * `$interpolate` service.
+		 *
+		 * @returns {string} interpolated string.
+		 */
+		$translateInterpolator.interpolate = function(string, interpolateParams) {
+			if ($sanitizeValueStrategy) {
+				interpolateParams = sanitizeParams(interpolateParams);
+			}
+			return $interpolate(string)(interpolateParams);
+		};
+
+		return $translateInterpolator;
 	}
 ]);
+
 
 ngTranslate
 /**
@@ -44,9 +123,7 @@ ngTranslate
  */
 .provider('$translate', ['$STORAGE_KEY',
 	function($STORAGE_KEY) {
-		'use strict';
-
-		var $translationTable = {},
+				var $translationTable = {},
 			$preferredLanguage,
 			$availableLanguageKeys = [],
 			$languageKeyAliases,
@@ -67,7 +144,6 @@ ngTranslate
 			$postCompilingEnabled = false,
 			$linkKeyRegExp = /@\:\((.*?)?\)/g,
 			NESTED_OBJECT_DELIMITER = '.';
-
 
 		// tries to determine the browsers locale
 		var getLocale = function() {
@@ -873,7 +949,6 @@ ngTranslate
 
 				};
 
-
 				/**
 				 * @name getTranslationTable
 				 * @private
@@ -923,8 +998,6 @@ ngTranslate
 					}
 					return result;
 				};
-
-
 
 				/**
 				 * @ngdoc function
@@ -1216,109 +1289,53 @@ ngTranslate
 			}
 		];
 
-
 	}
 ]);
+
 
 ngTranslate
 /**
  * @ngdoc object
- * @name pascalprecht.translate.$translateDefaultInterpolation
- * @requires $interpolate
+ * @name pascalprecht.translate.$translateStaticFilesLoader
+ * @requires $q
+ * @requires $http
  *
  * @description
- * Uses angular's `$interpolate` services to interpolate strings against some values.
+ * Creates a loading function for a typical static file url pattern:
+ * "lang-en_US.json", "lang-de_DE.json", etc. Using this builder,
+ * the response of these urls must be an object of key-value pairs.
  *
- * @return {object} $translateInterpolator Interpolator service
+ * @param {object} options Options object, which gets prefix, suffix and key.
  */
-.factory('$translateDefaultInterpolation', ['$interpolate',
-	function($interpolate) {
-        'use strict';
+.factory('$translateStaticFilesLoader', ['$q', '$http',
+	function($q, $http) {
+        		return function(options) {
 
-		var $translateInterpolator = {},
-			$locale,
-			$identifier = 'default',
-			$sanitizeValueStrategy = null,
-			// map of all sanitize strategies
-			sanitizeValueStrategies = {
-				escaped: function(params) {
-					var result = {};
-					for (var key in params) {
-						if (params.hasOwnProperty(key)) {
-							result[key] = angular.element('<div></div>').text(params[key]).html();
-						}
-					}
-					return result;
-				}
-			};
-
-		var sanitizeParams = function(params) {
-			var result;
-			if (angular.isFunction(sanitizeValueStrategies[$sanitizeValueStrategy])) {
-				result = sanitizeValueStrategies[$sanitizeValueStrategy](params);
-			} else {
-				result = params;
+			if (!options || (!angular.isString(options.prefix) || !angular.isString(options.suffix))) {
+				throw new Error('Couldn\'t load static files, no prefix or suffix specified!');
 			}
-			return result;
-		};
 
-		/**
-		 * @ngdoc function
-		 * @name pascalprecht.translate.$translateDefaultInterpolation#setLocale
-		 * @methodOf pascalprecht.translate.$translateDefaultInterpolation
-		 *
-		 * @description
-		 * Sets current locale (this is currently not use in this interpolation).
-		 *
-		 * @param {string} locale Language key or locale.
-		 */
-		$translateInterpolator.setLocale = function(locale) {
-			$locale = locale;
-		};
+			var deferred = $q.defer();
 
-		/**
-		 * @ngdoc function
-		 * @name pascalprecht.translate.$translateDefaultInterpolation#getInterpolationIdentifier
-		 * @methodOf pascalprecht.translate.$translateDefaultInterpolation
-		 *
-		 * @description
-		 * Returns an identifier for this interpolation service.
-		 *
-		 * @returns {string} $identifier
-		 */
-		$translateInterpolator.getInterpolationIdentifier = function() {
-			return $identifier;
-		};
+			$http({
+				url: [
+					options.prefix,
+					options.key,
+					options.suffix
+				].join(''),
+				method: 'GET',
+				params: ''
+			}).success(function(data) {
+				deferred.resolve(data);
+			}).error(function() {
+				deferred.reject(options.key);
+			});
 
-		$translateInterpolator.useSanitizeValueStrategy = function(value) {
-			$sanitizeValueStrategy = value;
-			return this;
+			return deferred.promise;
 		};
-
-		/**
-		 * @ngdoc function
-		 * @name pascalprecht.translate.$translateDefaultInterpolation#interpolate
-		 * @methodOf pascalprecht.translate.$translateDefaultInterpolation
-		 *
-		 * @description
-		 * Interpolates given string agains given interpolate params using angulars
-		 * `$interpolate` service.
-		 *
-		 * @returns {string} interpolated string.
-		 */
-		$translateInterpolator.interpolate = function(string, interpolateParams) {
-			if ($sanitizeValueStrategy) {
-				interpolateParams = sanitizeParams(interpolateParams);
-			}
-			return $interpolate(string)(interpolateParams);
-		};
-
-		return $translateInterpolator;
 	}
 ]);
 
-ngTranslate
-.constant('$STORAGE_KEY', 'NG_TRANSLATE_LANG_KEY');
 
 angular.module('pascalprecht.translate')
 /**
@@ -1381,6 +1398,7 @@ angular.module('pascalprecht.translate')
     return $translate.instant(translationId, interpolateParams, interpolation);
   };
 }]);
+
 
 /*jshint -W087 */
 ngTranslate
@@ -1463,9 +1481,7 @@ ngTranslate
  */
 .directive('translate', ['$translate', '$q', '$interpolate', '$compile', '$parse', '$rootScope',
 	function($translate, $q, $interpolate, $compile, $parse, $rootScope) {
-		'use strict';
-
-		return {
+				return {
 			restrict: 'AE',
 			scope: true,
 			link: function(scope, iElement, iAttr) {
@@ -1487,7 +1503,6 @@ ngTranslate
 						scope.translationId = translationId;
 					}
 				});
-
 
 				if (translateValuesExist) {
 					iAttr.$observe('translateValues', function(interpolateParams) {
@@ -1570,6 +1585,33 @@ ngTranslate
 	}
 ]);
 
+
+ngTranslate
+
+.directive('localeSelector', [
+	'$translate',
+	function($translate) {
+		        var changeLocaleHandler = function (locale) {
+                $translate.use(locale);            
+            },
+            linkFn = function(scope) {
+                scope.changeLocale = changeLocaleHandler;
+            };
+
+		return {
+			restrict: 'AE',
+			templateUrl: 'templates/localeSelector.tpl.html',
+			scope: {
+				localeCollection: '=',
+				selectorLabel: '@',
+                selectorLabelL10n: '@'
+			},
+			link: linkFn
+		};
+	}
+]);
+
+
 ngTranslate
 /**
  * @ngdoc directive
@@ -1589,8 +1631,7 @@ ngTranslate
  */
 .directive('translateCloak', ['$rootScope', '$translate',
 	function($rootScope, $translate) {
-		'use strict';
-		return {
+				return {
 			compile: function(tElement) {
 				$rootScope.$on('$translateLoadingSuccess', function() {
 					tElement.removeClass($translate.cloakClassName());
@@ -1600,3 +1641,37 @@ ngTranslate
 		};
 	}
 ]);
+
+
+
+ngTranslate.run([
+	'$translate',
+	function($translate) {
+				var key = $translate.storageKey(),
+			storage = $translate.storage();
+
+		if (storage) {
+			if (!storage.get(key)) {
+				if (angular.isString($translate.preferredLanguage())) {
+					$translate.use($translate.preferredLanguage());
+				} else {
+					storage.set(key, $translate.use());
+				}
+			} else {
+				$translate.use(storage.get(key));
+			}
+		} else if (angular.isString($translate.preferredLanguage())) {
+			$translate.use($translate.preferredLanguage());
+		}
+	}
+]);
+
+
+/* HTML templates */
+ngTranslate.run(function($templateCache) {
+    $templateCache.put('templates/localeSelector.tpl.html',
+    "<div class=\"btn-group\"><button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" data-translate=\"{{ selectorLabelL10n }}\">{{ selectorLabel }} <span class=\"caret\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li data-ng-repeat=\"locale in localeCollection\"><a href=\"#\" class=\"locale-{{ locale.key }}\" data-translate=\"{{ locale.L10n }}\" ng-click=\"changeLocale(locale.key)\">{{ locale.label }}</a></li></ul></div>"
+  );
+});
+
+}());

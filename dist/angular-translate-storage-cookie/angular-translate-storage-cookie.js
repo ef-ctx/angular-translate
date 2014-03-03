@@ -1,5 +1,4 @@
-angular.module('pascalprecht.translate')
-
+ngTranslate
 /**
  * @ngdoc object
  * @name pascalprecht.translate.$translateCookieStorage
@@ -12,7 +11,7 @@ angular.module('pascalprecht.translate')
  */
 .factory('$translateCookieStorage', ['$cookieStore',
 	function($cookieStore) {
-		'use strict';
+        'use strict';
 
 		var $translateCookieStorage = {
 

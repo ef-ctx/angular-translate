@@ -1,4 +1,4 @@
-angular.module('pascalprecht.translate')
+ngTranslate
 /**
  * @ngdoc object
  * @name pascalprecht.translate.$translatePartialLoaderProvider

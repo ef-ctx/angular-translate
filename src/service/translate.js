@@ -1,3 +1,4 @@
+ngTranslate
 /**
  * @ngdoc object
  * @name pascalprecht.translate.$translateProvider
@@ -7,7 +8,7 @@
  * and similar to configure translation behavior directly inside of a module.
  *
  */
-angular.module('pascalprecht.translate').provider('$translate', ['$STORAGE_KEY',
+.provider('$translate', ['$STORAGE_KEY',
 	function($STORAGE_KEY) {
 		'use strict';
 
@@ -863,6 +864,32 @@ angular.module('pascalprecht.translate').provider('$translate', ['$STORAGE_KEY',
 					}
 					return deferred.promise;
 				};
+				
+                /**
+				 * @name getTranslationTable
+				 * @private
+				 *
+				 * @description
+				 * Returns a promise that resolves to the translation table
+				 * or is rejected if an error occurred.
+				 *
+				 * @param langKey
+				 * @returns {Q.promise}
+				 */
+				var determineTranslationInstant = function(translationId, interpolateParams, interpolationId) {
+
+					var result,
+						table = $uses ? $translationTable[$uses] : $translationTable,
+						Interpolator = (interpolationId) ? interpolatorHashMap[interpolationId] : defaultInterpolator;
+
+					try {
+						result = Interpolator.interpolate(translateKey(translationId, table), interpolateParams);
+					} catch (error) {
+						console.error(error);
+					}
+					return result;
+				};
+
 
 
 				/**
@@ -1084,6 +1111,63 @@ angular.module('pascalprecht.translate').provider('$translate', ['$STORAGE_KEY',
 						reject();
 					}
 					return deferred.promise;
+				};
+
+				/**
+				 * @ngdoc function
+				 * @name pascalprecht.translate.$translate#instant
+				 * @methodOf pascalprecht.translate.$translate
+				 *
+				 * @description
+				 * Returns a translation instantly from the internal state of loaded translation. All rules
+				 * regarding the current language, the preferred language of even fallback languages will be
+				 * used except any promise handling. If a language was not found, an asynchronous loading
+				 * will be invoked in the background.
+				 *
+				 * @param {string} langKey The language to translate to.
+				 * @param {string} translationId Translation ID
+				 * @param {object} interpolateParams Params
+				 *
+				 * @return {string} translation
+				 */
+				$translate.instant = function(translationId, interpolateParams, interpolationId) {
+
+					if (typeof translationId === 'undefined' || translationId === '') {
+						return translationId;
+					}
+
+					translationId = translationId.trim();
+
+					var result, possibleLangKeys = [];
+					if ($preferredLanguage) {
+						possibleLangKeys.push($preferredLanguage);
+					}
+
+					if ($uses) {
+						possibleLangKeys.push($uses);
+					}
+
+					for (var i = 0, c = possibleLangKeys.length; i < c; i++) {
+						var possibleLangKey = possibleLangKeys[i];
+						if ($translationTable[possibleLangKey]) {
+							if ($translationTable[possibleLangKey][translationId]) {
+								result = determineTranslationInstant(translationId, interpolateParams, interpolationId);
+							}
+						}
+						if (typeof result !== 'undefined') {
+							break;
+						}
+					}
+
+					if (!result) {
+						// Return translation if not found anything.
+						result = undefined;
+						if ($missingTranslationHandlerFactory && !pendingLoader) {
+							$injector.get($missingTranslationHandlerFactory)(translationId, $uses);
+						}
+					}
+
+					return result;
 				};
 
 				if ($loaderFactory) {

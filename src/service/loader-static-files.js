@@ -1,4 +1,4 @@
-angular.module('pascalprecht.translate')
+ngTranslate
 /**
  * @ngdoc object
  * @name pascalprecht.translate.$translateStaticFilesLoader
@@ -14,6 +14,7 @@ angular.module('pascalprecht.translate')
  */
 .factory('$translateStaticFilesLoader', ['$q', '$http',
 	function($q, $http) {
+        'use strict';
 
 		return function(options) {
 
