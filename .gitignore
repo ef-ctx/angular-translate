@@ -6,3 +6,4 @@ demo/js/angular-translate-latest.js
 .idea
 *.iml
 atlassian-ide-plugin.xml
+tmp/

@@ -12,7 +12,7 @@ module.exports = function (config) {
       'bower_components/angular/angular.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'dist/ctx-angular-translate..js',
+      'dist/ctx-angular-translate.js',
       'test/unit/**/*.spec.js'
     ],
 

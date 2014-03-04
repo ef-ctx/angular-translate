@@ -30,23 +30,7 @@ describe('pascalprecht.translate', function() {
                     }
                 }
             },
-            locales: [
-                {
-                    'label': 'English (Great Britain)',
-                    'L10n': 'language.en_GB',
-                    'key': 'en_GB'
-                },
-                {
-                    'label': 'English (USA)',
-                    'L10n': 'language.en_US',
-                    'key': 'en_US'
-                },
-                {
-                    'label': 'Spanish (Spain)',
-                    'L10n': 'language.es_ES',
-                    'key': 'es_ES'
-                }
-            ]
+            locales: [ 'en_GB', 'en_US', 'es_ES']
         },
         
         $compile,
@@ -69,7 +53,7 @@ describe('pascalprecht.translate', function() {
             text: 'Language',
             L10n: 'buttonLabel'
         };
-        element = $compile("<span data-locale-selector data-locale-collection='locales' data-label='buttonLabel'></span>") ($rootScope);
+        element = $compile("<span data-locale-selector data-languages='locales' data-label='buttonLabel'></span>") ($rootScope);
         $rootScope.$digest(); 
         expect(element.find('li').length).toBe(mocks.locales.length);
 

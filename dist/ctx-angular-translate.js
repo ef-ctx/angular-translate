@@ -12,6 +12,27 @@ var ngTranslate = angular.module('pascalprecht.translate', ['ng']);
 
 
 ngTranslate
+
+.value('ngTranslateConfig',{
+
+    "directive": {
+        "localeSelector": {
+            "buttonLabel": "Language",
+            "L10n": "localeSelector.buttonLabel"
+        }
+    },
+    "languageLabels": {
+        "en_US": "English (United States)",
+        "en_GB": "English (Great Britain)",
+        "es_ES": "Español (España)",
+        "fr_FR": "Français",
+        "pt_PT": "Português"
+    }
+
+});
+
+
+ngTranslate
 .constant('$STORAGE_KEY', 'NG_TRANSLATE_LANG_KEY');
 
 
@@ -1249,9 +1270,11 @@ ngTranslate
 					if ($preferredLanguage) {
 						possibleLangKeys.push($preferredLanguage);
 					}
+
 					if ($uses) {
 						possibleLangKeys.push($uses);
 					}
+
 					for (var i = 0, c = possibleLangKeys.length; i < c; i++) {
 						var possibleLangKey = possibleLangKeys[i];
 						if ($translationTable[possibleLangKey]) {
@@ -1589,23 +1612,28 @@ ngTranslate
 ngTranslate
 
 .directive('localeSelector', [
-	'$translate',
-	function($translate) {
+	'$translate', 'ngTranslateConfig',
+	function($translate, config) {
 		        var changeLocaleHandler = function (locale) {
                 $translate.use(locale);            
             },
             linkFn = function(scope) {
+                scope.config = config;
                 scope.changeLocale = changeLocaleHandler;
             };
 
 		return {
 			restrict: 'AE',
 			templateUrl: 'templates/localeSelector.tpl.html',
+            transclude: true,
+            replace: true,
 			scope: {
-				localeCollection: '=',
+				languages: '=',
 				selectorLabel: '@',
-                selectorLabelL10n: '@'
+                selectorLabelL10n: '@',
+                translate: '@'
 			},
+            priority:1,
 			link: linkFn
 		};
 	}
@@ -1643,7 +1671,6 @@ ngTranslate
 ]);
 
 
-
 ngTranslate.run([
 	'$translate',
 	function($translate) {
@@ -1670,7 +1697,7 @@ ngTranslate.run([
 /* HTML templates */
 ngTranslate.run(function($templateCache) {
     $templateCache.put('templates/localeSelector.tpl.html',
-    "<div class=\"btn-group\"><button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" data-translate=\"{{ selectorLabelL10n }}\">{{ selectorLabel }} <span class=\"caret\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li data-ng-repeat=\"locale in localeCollection\"><a href=\"#\" class=\"locale-{{ locale.key }}\" data-translate=\"{{ locale.L10n }}\" ng-click=\"changeLocale(locale.key)\">{{ locale.label }}</a></li></ul></div>"
+    "<div class=\"localeSelector btn-group\"><button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"><span ng-transclude=\"\"></span> <span class=\"caret\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li data-ng-repeat=\"locale in languages\"><a href=\"#\" class=\"locale-{{ locale }}\" data-translate=\"{{ 'localeSelector.' + locale }}\" ng-click=\"changeLocale(locale)\">{{ config.languageLabels[locale] || locale }}</a></li></ul></div>"
   );
 });
 

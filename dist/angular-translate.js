@@ -7,6 +7,25 @@
  */
 var ngTranslate = angular.module('pascalprecht.translate', ['ng']);
 
+ngTranslate
+
+.value('ngTranslateConfig',{
+
+    "directive": {
+        "localeSelector": {
+            "buttonLabel": "Language",
+            "L10n": "localeSelector.buttonLabel"
+        }
+    },
+    "languageLabels": {
+        "en_US": "English (United States)",
+        "en_GB": "English (Great Britain)",
+        "es_ES": "Español (España)",
+        "fr_FR": "Français",
+        "pt_PT": "Português"
+    }
+
+});
 
 ngTranslate.run([
 	'$translate',
@@ -1176,9 +1195,11 @@ ngTranslate
 					if ($preferredLanguage) {
 						possibleLangKeys.push($preferredLanguage);
 					}
+
 					if ($uses) {
 						possibleLangKeys.push($uses);
 					}
+
 					for (var i = 0, c = possibleLangKeys.length; i < c; i++) {
 						var possibleLangKey = possibleLangKeys[i];
 						if ($translationTable[possibleLangKey]) {

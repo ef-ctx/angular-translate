@@ -20,6 +20,7 @@ module.exports = function(config) {
             'src/service/messageformat-interpolation.js',
 			'src/service/loader-static-files.js',
 			'src/directive/translate.js',
+			'src/filter/translate.js',
 			'src/directive/translate-cloak.js',
 			'src/directive/locale-selector.js',
             'src/service/handler-log.js',
@@ -27,6 +28,7 @@ module.exports = function(config) {
             'src/service/loader-url.js',
             'src/service/storage-cookie.js',
             'src/service/storage-local.js',
+            'src/config.js',
             'tmp/tpl.js',
 			'test/unit/**/*.spec.js'
 		],

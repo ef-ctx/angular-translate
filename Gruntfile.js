@@ -25,6 +25,7 @@ module.exports = function(grunt) {
 
 			core: [
 				'src/index.js',
+                'src/config.js',
 				'src/translate.js',
 				'src/service/translate.js',
 				'src/service/default-interpolation.js',
@@ -37,6 +38,7 @@ module.exports = function(grunt) {
 
 			ctx: [
 				'src/index.js',
+                'src/config.js',
 				'src/service/storage-key.js',
 				'src/service/default-interpolation.js',
 				'src/service/translate.js',

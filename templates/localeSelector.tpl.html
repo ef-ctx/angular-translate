@@ -1,12 +1,12 @@
-<div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-translate="{{ selectorLabelL10n }}">
-        {{ selectorLabel }}
+<div class="localeSelector btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span ng-transclude></span>
         <span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu">
-		<li data-ng-repeat="locale in localeCollection">
-            <a href="#" class="locale-{{ locale.key }}" data-translate="{{ locale.L10n }}" ng-click="changeLocale(locale.key)" > 
-                 {{ locale.label }} 
+		<li data-ng-repeat="locale in languages">
+            <a href="#" class="locale-{{ locale }}" data-translate="{{ 'localeSelector.' + locale }}" ng-click="changeLocale(locale)" > 
+                 {{ config.languageLabels[locale] || locale }} 
             </a>
 		</li>
 	</ul>

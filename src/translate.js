@@ -1,4 +1,3 @@
-
 ngTranslate.run([
 	'$translate',
 	function($translate) {
