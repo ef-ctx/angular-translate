@@ -59,7 +59,6 @@ describe('pascalprecht.translate', function() {
 
         console.log(element.find('li')[0]);
         console.log(element.find('button')[0]);
-        debugger;
 	});
 
     /*it('Should load a locale file related to the element clicked', function () {

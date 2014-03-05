@@ -88,6 +88,8 @@ ngTranslate
 				var translateValuesExist = (iAttr.translateValues) ? iAttr.translateValues : undefined,
 					translateInterpolation = (iAttr.translateInterpolation) ? iAttr.translateInterpolation : undefined,
 					translateValueExist = iElement[0].outerHTML.match(/translate-value-+/i),
+                    prefix = (iElement.attr('data-prefix')) ? iElement.attr('data-prefix') : undefined,
+                    suffix= (iElement.attr('data-suffix')) ? iElement.attr('data-suffix') : undefined,
 					fallbackValue = iElement.html();
 
 				scope.fallbackValue = fallbackValue;
@@ -132,6 +134,9 @@ ngTranslate
 					var globallyEnabled = $translate.isPostCompilingEnabled(),
 						locallyDefined = (typeof iAttr.translateCompile !== 'undefined'),
 						locallyEnabled = (locallyDefined && iAttr.translateCompile !== 'false');
+                    
+                    value = (prefix) ? prefix + value : value; 
+                    value = (suffix) ? value + suffix : value; 
 
 					iElement.html(value);
 

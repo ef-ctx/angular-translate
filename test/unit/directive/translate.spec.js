@@ -59,6 +59,24 @@ describe('pascalprecht.translate', function() {
 			expect(element.text()).toBe('foo');
 		});
 
+		it('should return translation with suffix and prefix if translation id exist and both suffix and prefix are defined', function() {
+			element = $compile('<div data-translate="TRANSLATION_ID" data-prefix="custom prefix " data-suffix=" custom suffix"></div>')($rootScope);
+			$rootScope.$digest();
+			expect(element.text()).toBe('custom prefix foo custom suffix');
+		});
+
+		it('should return translation with suffix if translation id exist suffix is defined', function() {
+			element = $compile('<div data-translate="TRANSLATION_ID" data-suffix=" custom suffix"></div>')($rootScope);
+			$rootScope.$digest();
+			expect(element.text()).toBe('foo custom suffix');
+		});
+
+		it('should return translation with prefix if translation id exist and prefix is defined', function() {
+			element = $compile('<div data-translate="TRANSLATION_ID" data-prefix="custom prefix " ></div>')($rootScope);
+			$rootScope.$digest();
+			expect(element.text()).toBe('custom prefix foo');
+		});
+
 
 		describe('Passing values', function() {
 			var element;
