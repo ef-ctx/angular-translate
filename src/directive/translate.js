@@ -102,7 +102,11 @@ ngTranslate
 					if (angular.equals(translationId, '') || !angular.isDefined(translationId)) {
 						scope.translationId = $interpolate(iElement.text().replace(/^\s+|\s+$/g, ''))(scope.$parent);
 					} else {
-						scope.translationId = translationId;
+                        // if the translate attribute has changed during runtime, we'll need to update the translation
+                        if(scope.translationId !== translationId) {
+                          scope.translationId = translationId
+                          updateTranslationFn();
+                        }
 					}
 				});
 
@@ -134,9 +138,9 @@ ngTranslate
 					var globallyEnabled = $translate.isPostCompilingEnabled(),
 						locallyDefined = (typeof iAttr.translateCompile !== 'undefined'),
 						locallyEnabled = (locallyDefined && iAttr.translateCompile !== 'false');
-                    
-                    value = (prefix) ? prefix + value : value; 
-                    value = (suffix) ? value + suffix : value; 
+
+                    value = (prefix) ? prefix + value : value;
+                    value = (suffix) ? value + suffix : value;
 
 					iElement.html(value);
 
