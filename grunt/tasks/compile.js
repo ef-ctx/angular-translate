@@ -1,14 +1,15 @@
 module.exports = function(grunt) {
     'use strict';
 
-    grunt.registerTask('build', [
+    grunt.registerTask('compile', [
         'test',
         'clean',
         'jshint',
         'ngtemplates',
         'concat',
         'ngmin',
-        'uglify'
+        'uglify',
+        'copy'
     ]);
 
 };

@@ -1,24 +1,12 @@
 module.exports = {
 
-    build_dir: 'dist',
+    build_dir: 'build',
+    dist_dir: 'dist',
     tmp_dir: 'tmp',
 
     lib_files: {
 
         core: [
-            'src/index.js',
-            'src/config.js',
-            'src/translate.js',
-            'src/service/translate.js',
-            'src/service/default-interpolation.js',
-            'src/service/storage-key.js',
-            'src/filter/translate.js',
-            'src/directive/translate.js',
-            'src/directive/translate-cloak.js',
-            'src/filter/translate.js'
-        ],
-
-        ctx: [
             'src/index.js',
             'src/config.js',
             'src/service/storage-key.js',

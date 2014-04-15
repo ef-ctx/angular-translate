@@ -9,7 +9,6 @@ module.exports = {
 
     all: ['Gruntfile.js', '<%= lib_files.core %>', '<%= lib_files.ext.all %>', '<%= lib_files.test %>'],
 
-    ctx: ['Gruntfile.js', '<%= lib_files.ctx%>'],
     core: {
         files: {
             src: ['<%= lib_files.core %>']
