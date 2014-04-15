@@ -5,10 +5,6 @@ module.exports = {
         configFile: 'grunt/karma.unit.conf.js',
         singleRun: true
     },
-    'unitCtx': {
-        configFile: 'grunt/karma.unit.ctx.conf.js',
-        singleRun: true
-    },
     'midway': {
         configFile: 'grunt/karma.midway.conf.js',
         singleRun: true

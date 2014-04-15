@@ -104,7 +104,7 @@ ngTranslate
 					} else {
                         // if the translate attribute has changed during runtime, we'll need to update the translation
                         if(scope.translationId !== translationId) {
-                          scope.translationId = translationId
+                          scope.translationId = translationId;
                           updateTranslationFn();
                         }
 					}

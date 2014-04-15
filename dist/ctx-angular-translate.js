@@ -560,7 +560,10 @@
             if (angular.equals(translationId, '') || !angular.isDefined(translationId)) {
               scope.translationId = $interpolate(iElement.text().replace(/^\s+|\s+$/g, ''))(scope.$parent);
             } else {
-              scope.translationId = translationId;
+              if (scope.translationId !== translationId) {
+                scope.translationId = translationId;
+                updateTranslationFn();
+              }
             }
           });
           if (translateValuesExist) {
