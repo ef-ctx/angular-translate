@@ -2,7 +2,7 @@ module.exports = {
 
     core: {
         files: {
-            '<%= build_dir %>/angular-translate.min.js': '<%= concat.core.dest %>'
+            '<%= build_dir %>/ctx-angular-translate.min.js': '<%= concat.core.dest %>'
         }
     }
 
