@@ -57,16 +57,7 @@ describe('pascalprecht.translate', function() {
         $rootScope.$digest(); 
         expect(element.find('li').length).toBe(mocks.locales.length);
 
-        console.log(element.find('li')[0]);
-        console.log(element.find('button')[0]);
 	});
 
-    /*it('Should load a locale file related to the element clicked', function () {
-        element = $compile("<span data-locale-selector data-locale-collection='locales' data-label='buttonLabel'></span>") ($rootScope);
-        $rootScope.$digest(); 
-       
-        browserTrigger(angular.element(element.find('span')[4]), 'click');
-        //$httpBackend.expectGET('/locale/en_US.json')respond(200, mocks.en_US);
-    });*/
 
 });
