@@ -3,6 +3,6 @@ module.exports = function (grunt) {
 
     grunt.renameTask('watch', 'dev');
 
-	grunt.registerTask('watch', ['jshint', 'ngtemplates', 'karma:unit', 'concat', 'dev:livereload']);
+	grunt.registerTask('watch', ['jshint', 'ngtemplates', 'karma:unit', 'concat', 'copy', 'dev:livereload']);
 
 };
