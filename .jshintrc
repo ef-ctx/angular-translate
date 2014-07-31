@@ -20,7 +20,7 @@
     "globalstrict": true,
 	"noarg": true,
     "globals": {
-        "ngTranslate": "true"
+        "ngTranslate": "true",
         "angular": true,
         "module": true,
         "inject": true,
