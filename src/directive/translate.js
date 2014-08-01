@@ -1,5 +1,5 @@
 /*jshint -W087 */
-ngTranslate
+cxTranslate
 /**
  * @ngdoc directive
  * @name pascalprecht.translate.directive:translate
@@ -88,17 +88,13 @@ ngTranslate
                 translateValues: '='
             },
             link: function($scope, $element, $attrs) {
-
                 var translate = function translate() {
                     var prefix = ($attrs.prefix) ? $element[0].attributes.getNamedItem($attrs.$attr.prefix).value : '',
-                        suffix = ($attrs.suffix) ? $element[0].attributes.getNamedItem($attrs.$attr.suffix).value : '',
-                        translation = $translate.instant($scope.translate, $scope.translateValues);
-
-
-                    if (translation) {
-                        $element.html(prefix + translation + suffix);
-                    }
-
+                        suffix = ($attrs.suffix) ? $element[0].attributes.getNamedItem($attrs.$attr.suffix).value : '';
+                    
+                    try {
+                        $element.html(prefix + $translate($scope.translate, $scope.translateValues) + suffix);
+                    } catch (error) {}
                 };
 
                 $scope.fallbackValue = $element.html();

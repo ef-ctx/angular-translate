@@ -1,8 +1,8 @@
 /**
  * @ngdoc overview
- * @name pascalprecht.translate
+ * @name cxTranslate
  *
  * @description
  * The main module which holds everything together.
  */
-var ngTranslate = angular.module('pascalprecht.translate', ['ng']);
+var cxTranslate = angular.module('cxTranslate', ['ng']);

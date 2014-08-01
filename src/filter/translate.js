@@ -1,4 +1,4 @@
-angular.module('pascalprecht.translate')
+cxTranslate
 /**
  * @ngdoc filter
  * @name pascalprecht.translate.filter:translate
@@ -49,13 +49,23 @@ angular.module('pascalprecht.translate')
     </file>
    </example>
  */
-.filter('translate', ['$parse', '$translate', function ($parse, $translate) {
-  return function (translationId, interpolateParams, interpolation) {
+.filter('translate', ['$parse', '$translate',
+    function($parse, $translate) {
+        'use strict';
+        return function(translationId, interpolateParams){
+            var translation;
 
-    if (!angular.isObject(interpolateParams)) {
-      interpolateParams = $parse(interpolateParams)();
+            if (!angular.isObject(interpolateParams)) {
+                interpolateParams = $parse(interpolateParams)();
+            }
+
+            try{
+                translation = $translate(translationId, interpolateParams);
+            } catch(error) {
+                translation = undefined;
+            }
+            
+            return translation;
+        };
     }
-
-    return $translate.instant(translationId, interpolateParams, interpolation);
-  };
-}]);
+]);

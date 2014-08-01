@@ -1,4 +1,4 @@
-ngTranslate
+cxTranslate
 /**
  * @ngdoc object
  * @name pascalprecht.translate.$translateDefaultInterpolation
