@@ -8,15 +8,11 @@ module.exports = {
 
         core: [
             'src/index.js',
-            'src/config.js',
-            'src/service/storage-key.js',
             'src/service/default-interpolation.js',
+            'src/service/fileLoader.js',
             'src/service/translate.js',
-            'src/service/loader-static-files.js',
             'src/filter/translate.js',
             'src/directive/translate.js',
-            'src/directive/locale-selector.js',
-            'src/directive/translate-cloak.js',
             'src/translate.js'
         ],
 
