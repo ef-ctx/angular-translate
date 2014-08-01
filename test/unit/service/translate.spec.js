@@ -1,4 +1,4 @@
-describe('pascalprecht.translate', function() {
+describe('cxTranslate', function() {
     'use strict';
 
     var $httpBackend,
@@ -67,52 +67,18 @@ describe('pascalprecht.translate', function() {
 
 
 
-    describe('$translate dfinitions', function() {
-
-        beforeEach(module('pascalprecht.translate', function($translateProvider) {
-            $translateProvider.preferredLanguage('en');
-        }));
-
-        beforeEach(inject(function(_$translate_, _$rootScope_, _$q_) {
-            $translate = _$translate_;
-            $rootScope = _$rootScope_;
-            $q = _$q_;
-        }));
-
-        it('should be defined', function() {
-            expect($translate).toBeDefined();
-        });
-
-        it('should be a function object', function() {
-            expect(typeof $translate).toBe('function');
-        });
-
-        it('should have a method use()', function() {
-            expect($translate.use).toBeDefined();
-        });
-
-        it('should have a method preferredLanguage()', function() {
-            expect($translate.preferredLanguage).toBeDefined();
-        });
-
-        it('should be a function', function() {
-            expect(typeof $translate.preferredLanguage).toBe('function');
-        });
-
-        it('$translate#use() should be a function', function() {
-            expect(typeof $translate.use).toBe('function');
-        });
-
-    });
-
-
     describe('$translate', function() {
 
 
-        beforeEach(module('pascalprecht.translate', function($translateProvider) {
-            $translateProvider.preferredLanguage('en');
+        beforeEach(module('cxTranslate', function($translateProvider) {
+            $translateProvider.configure({
+                file: {
+                    name: 'en'
+                },
+                locale: 'en'
+            });
         }));
-        
+
         beforeEach(inject(function(_$httpBackend_) {
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', 'en').respond(translationMock);
@@ -126,60 +92,62 @@ describe('pascalprecht.translate', function() {
         }));
 
         it('should return translation if translation id if exists', function() {
-            expect($translate.instant('EXISTING_TRANSLATION_ID')).toEqual('foo');
-            expect($translate.instant('BLANK_VALUE')).toEqual(undefined);
+            expect($translate('EXISTING_TRANSLATION_ID')).toEqual('foo');
+            expect($translate('BLANK_VALUE')).toEqual('');
         });
 
         it('should return translation when the translation exists and is a combination of keys', function() {
-            expect($translate.instant('home.secondGradeRecursive')).toEqual('first and second, first and second');
+            expect($translate('home.secondGradeRecursive')).toEqual('first and second, first and second');
         });
 
         it('should return translation, if translation id exists with whitespace', function() {
-            expect($translate.instant('EXISTING_TRANSLATION_ID\t        \n')).toEqual('foo');
-            expect($translate.instant('\t        \nEXISTING_TRANSLATION_ID')).toEqual('foo');
-            expect($translate.instant('BLANK_VALUE\t        \n')).toEqual(undefined);
-            expect($translate.instant('\t        \nBLANK_VALUE')).toEqual(undefined);
+            expect($translate('EXISTING_TRANSLATION_ID\t        \n')).toEqual('foo');
+            expect($translate('\t        \nEXISTING_TRANSLATION_ID')).toEqual('foo');
+            expect($translate('BLANK_VALUE\t        \n')).toEqual('');
+            expect($translate('\t        \nBLANK_VALUE')).toEqual('');
         });
 
         it('should use $interpolate service', function() {
-            expect($translate.instant('TRANSLATION_ID')).toEqual('Lorem Ipsum ');
-            expect($translate.instant('TRANSLATION_ID', {
+            expect($translate('TRANSLATION_ID')).toEqual('Lorem Ipsum ');
+            expect($translate('TRANSLATION_ID', {
                 value: 'foo'
             })).toEqual('Lorem Ipsum foo');
-            expect($translate.instant('TRANSLATION_ID_2', {
+            expect($translate('TRANSLATION_ID_2', {
                 value: 'foo'
             })).toEqual('Lorem Ipsum foo + foo');
-            expect($translate.instant('TRANSLATION_ID_3', {
+            expect($translate('TRANSLATION_ID_3', {
                 value: 'foo'
             })).toEqual('Lorem Ipsum foofoo');
-            expect($translate.instant('TRANSLATION_ID_3', {
+            expect($translate('TRANSLATION_ID_3', {
                 value: '3'
             })).toEqual('Lorem Ipsum 33');
-            expect($translate.instant('TRANSLATION_ID_3', {
+            expect($translate('TRANSLATION_ID_3', {
                 value: 3
             })).toEqual('Lorem Ipsum 6');
         });
 
         it('should support namespaces in translation ids', function() {
-            expect($translate.instant('DOCUMENT.HEADER.TITLE')).toEqual('Header');
-            expect($translate.instant('DOCUMENT.SUBHEADER.TITLE')).toEqual('2. Header');
+            expect($translate('DOCUMENT.HEADER.TITLE')).toEqual('Header');
+            expect($translate('DOCUMENT.SUBHEADER.TITLE')).toEqual('2. Header');
         });
     });
 
     describe('$translate#linkKeyRegExp()', function() {
 
+        var $translate;
 
-        beforeEach(module('pascalprecht.translate', function($translateProvider) {
-            $translateProvider
-                .translations('en', translationMock)
-                .preferredLanguage('en')
-                .linkKeyRegExp(/test#---(.*?)?---/g);
+        beforeEach(module('cxTranslate', function($translateProvider) {
+            $translateProvider.configure({
+                file: {
+                    name: 'en'
+                },
+                locale: 'en',
+                linkKeyRegExp: /test#---(.*?)?---/g
+            });
         }));
-       
-        beforeEach(inject(function(_$translate_, _$rootScope_, _$q_) {
+
+        beforeEach(inject(function(_$translate_) {
             $translate = _$translate_;
-            $rootScope = _$rootScope_;
-            $q = _$q_;
         }));
 
         beforeEach(inject(function(_$httpBackend_) {
@@ -189,7 +157,7 @@ describe('pascalprecht.translate', function() {
         }));
 
         it('Should return the translation weith keys on it when a custom pattern is given', function() {
-            expect($translate.instant('differentPattern.secondGradeRecursive')).toEqual('ok, no');
+            expect($translate('differentPattern.secondGradeRecursive')).toEqual('ok, no');
         });
 
     });

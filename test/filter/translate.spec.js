@@ -1,4 +1,4 @@
-describe('pascalprecht.translate', function() {
+describe('cxTranslatetranslate', function() {
     'use strict';
 
     var $httpBackend,
@@ -37,8 +37,13 @@ describe('pascalprecht.translate', function() {
                 $httpBackend.flush();
             }));
 
-            beforeEach(module('pascalprecht.translate', function($translateProvider) {
-                $translateProvider.preferredLanguage('en');
+            beforeEach(module('cxTranslate', function($translateProvider) {
+                $translateProvider.configure({
+                    file:{
+                        name: 'en'
+                    },
+                    locale: 'en'
+                });
             }));
 
             beforeEach(inject(function(_$filter_, _$q_, _$rootScope_) {
@@ -112,7 +117,7 @@ describe('pascalprecht.translate', function() {
 
     /*describe('additional interpolation', function() {
 
-        beforeEach(module('pascalprecht.translate', function($translateProvider, $provide) {
+        beforeEach(module('cxTranslatetranslate', function($translateProvider, $provide) {
 
             $provide.factory('customInterpolation', function() {
 

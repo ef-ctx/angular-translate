@@ -1,4 +1,4 @@
-describe('pascalprecht.translate', function() {
+describe('cxTranslate', function() {
 
     'use strict';
     var translationMock = {
@@ -17,8 +17,13 @@ describe('pascalprecht.translate', function() {
 
     describe('$translateFilter', function() {
 
-        beforeEach(module('pascalprecht.translate', function($translateProvider) {
-            $translateProvider.preferredLanguage('en');
+        beforeEach(module('cxTranslate', function($translateProvider) {
+            $translateProvider.configure({
+                file: {
+                    name: 'en'
+                },
+                locale: 'en'
+            });
         }));
 
         var $filter, $q, $httpBackend, $rootScope, $translate;

@@ -1,4 +1,4 @@
-describe('pascalprecht.translate', function() {
+describe('cxTranslate', function() {
     'use strict';
 
     describe('$translateDirective (single-lang)', function() {
@@ -21,8 +21,13 @@ describe('pascalprecht.translate', function() {
                 'BLANK_VALUE': ''
             };
 
-        beforeEach(module('pascalprecht.translate', function($translateProvider) {
-            $translateProvider.preferredLanguage('en');
+        beforeEach(module('cxTranslate', function($translateProvider) {
+            $translateProvider.configure({
+                file: {
+                    name: 'en'
+                },
+                locale: 'en'
+            });
         }));
 
         beforeEach(inject(function(_$httpBackend_) {
