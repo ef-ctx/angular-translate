@@ -92,12 +92,18 @@ cxTranslate
          * Sets locale in config.locale
          * @param {string} locale A language key.
          */
-        this.setLocale = function setLocale(locale) {
+        var setLocale = function setLocale(locale) {
             if (locale) {
                 config.locale = locale;
             }
             return locale;
         };
+        
+        // Exposing set Locale 
+        this.setLocale = setLocale;
+        // Expose set Locale as pascalPretch in order to make it compatible 
+        this.setLanguage = setLocale;
+        this.preferredLanguage = setLocale;
 
 
         /**

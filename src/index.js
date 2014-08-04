@@ -5,4 +5,4 @@
  * @description
  * The main module which holds everything together.
  */
-var cxTranslate = angular.module('cxTranslate', ['ng']);
+var cxTranslate = angular.module('pascalprecht.translate', ['ng']);

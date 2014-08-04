@@ -1,4 +1,4 @@
-describe('cxTranslate', function() {
+describe('pascalprecht.translate', function() {
     'use strict';
 
     var $httpBackend,
@@ -70,7 +70,7 @@ describe('cxTranslate', function() {
     describe('$translate', function() {
 
 
-        beforeEach(module('cxTranslate', function($translateProvider) {
+        beforeEach(module('pascalprecht.translate', function($translateProvider) {
             $translateProvider.configure({
                 file: {
                     name: 'en'
@@ -136,7 +136,7 @@ describe('cxTranslate', function() {
 
         var $translate;
 
-        beforeEach(module('cxTranslate', function($translateProvider) {
+        beforeEach(module('pascalprecht.translate', function($translateProvider) {
             $translateProvider.configure({
                 file: {
                     name: 'en'

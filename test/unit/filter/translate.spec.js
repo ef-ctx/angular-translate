@@ -1,4 +1,4 @@
-describe('cxTranslate', function() {
+describe('pascalprecht.translate', function() {
 
     'use strict';
     var translationMock = {
@@ -17,7 +17,7 @@ describe('cxTranslate', function() {
 
     describe('$translateFilter', function() {
 
-        beforeEach(module('cxTranslate', function($translateProvider) {
+        beforeEach(module('pascalprecht.translate', function($translateProvider) {
             $translateProvider.configure({
                 file: {
                     name: 'en'

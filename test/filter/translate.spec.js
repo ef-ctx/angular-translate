@@ -1,4 +1,4 @@
-describe('cxTranslatetranslate', function() {
+describe('pascalprecht.translate.translate filter', function() {
     'use strict';
 
     var $httpBackend,
@@ -37,7 +37,7 @@ describe('cxTranslatetranslate', function() {
                 $httpBackend.flush();
             }));
 
-            beforeEach(module('cxTranslate', function($translateProvider) {
+            beforeEach(module('pascalprecht.translate', function($translateProvider) {
                 $translateProvider.configure({
                     file:{
                         name: 'en'
@@ -117,7 +117,7 @@ describe('cxTranslatetranslate', function() {
 
     /*describe('additional interpolation', function() {
 
-        beforeEach(module('cxTranslatetranslate', function($translateProvider, $provide) {
+        beforeEach(module('pascalprecht.translatetranslate', function($translateProvider, $provide) {
 
             $provide.factory('customInterpolation', function() {
 

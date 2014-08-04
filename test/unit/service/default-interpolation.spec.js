@@ -1,9 +1,9 @@
-describe('cxTranslate', function() {
+describe('pascalprecht.translate', function() {
     'use strict';
 
     var $translateDefaultInterpolation;
 
-    beforeEach(module('cxTranslate', function($translateProvider) {
+    beforeEach(module('pascalprecht.translate', function($translateProvider) {
         $translateProvider.configure({
             file: {
                 name: 'en'
