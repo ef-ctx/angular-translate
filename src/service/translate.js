@@ -191,7 +191,7 @@ cxTranslate
 
                 interpolator.setLocale(config.locale);
 
-                var $translate = function(translationId, interpolateParams) {
+                var translate = function(translationId, interpolateParams) {
                     var result;
                     translationId = translationId.trim();
 
@@ -207,7 +207,12 @@ cxTranslate
                     
                     return result ;
                 };
+                
+                var $translate = translate;
 
+                //compatibility with pascalprecht.translate
+                $translate.instant = translate;
+                
                 /**
                  * @ngdoc function
                  * @name cxTranslate.$translate#getLocale
@@ -259,7 +264,7 @@ cxTranslate
                         throw new Error('cxTranslate.loadFile function error: No file properly configured to be loaded');
                     }
                 };
-                
+                 
                 return $translate;
             }
 
