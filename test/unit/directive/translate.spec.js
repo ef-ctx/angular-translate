@@ -107,6 +107,19 @@ describe('pascalprecht.translate', function() {
                     expect(element.text()).toBe('Lorem Ipsum ');
                 });
 
+                it('should replace interpolation directive with a string when translation is a call to a function wich returns a key', function() {
+                    $rootScope.translate = function() {
+                        return 'TD_WITH_VALUE';
+                    };
+                    $rootScope.translateValues = function() {
+                        return {
+                            value: 'foo'
+                        };
+                    };
+                    element = $compile('<div translate="{{translate()}}" translate-values="{{translateValues()}}"></div>')($rootScope);
+                    expect(element.text()).toBe('Lorem Ipsum foo');
+                });
+
             });
 
             describe('while values given as string', function() {

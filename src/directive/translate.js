@@ -77,31 +77,44 @@ cxTranslate
     </file>
    </example>
  */
-.directive('translate', ['$translate',
-    function($translate) {
+.directive('translate', ['$translate', '$parse',
+    function($translate, $parse) {
         'use strict';
 
         return {
             restrict: 'AE',
             scope: {
-                translate: '@',
-                translateValues: '='
+                translate: '@'
             },
             link: function($scope, $element, $attrs) {
                 var translate = function translate() {
-                    var prefix = ($attrs.prefix) ? $element[0].attributes.getNamedItem($attrs.$attr.prefix).value : '',
-                        suffix = ($attrs.suffix) ? $element[0].attributes.getNamedItem($attrs.$attr.suffix).value : '';
-                    
-                    try {
-                        $element.html(prefix + $translate($scope.translate, $scope.translateValues) + suffix);
-                    } catch (error) {}
-                };
+                        var prefix = ($attrs.prefix) ? $element[0].attributes.getNamedItem($attrs.$attr.prefix).value : '',
+                            suffix = ($attrs.suffix) ? $element[0].attributes.getNamedItem($attrs.$attr.suffix).value : '';
+
+                        try {
+                            $element.html(prefix + $translate($scope.translate, $scope.interpolateParams) + suffix);
+                        } catch (error) {}
+                    };
+
+                $scope.interpolateParams = {};
+                
+                if ($attrs.translateValues) {
+                    $scope.interpolateParams = $parse($attrs.translateValues)($scope.$parent);
+                    $attrs.$observe('translateValues', function(interpolateParams) {
+                        if (interpolateParams) {
+                            $scope.$parent.$watch(function() {
+                                angular.extend($scope.interpolateParams, $parse(interpolateParams)($scope.$parent));
+                            });
+                        }
+                    });
+                }
 
                 $scope.fallbackValue = $element.html();
-                $scope.interpolateParams = {};
 
                 $scope.$watch('translate', translate);
-                $scope.$watch('translateValues', translate);
+                $scope.$watch('interpolateParams', translate, true);
+
+                translate();
             }
         };
 
