@@ -260,9 +260,10 @@ cxTranslate
                         }, function(error) {
                             console.error(error);
                         });
-                    } else {
-                        throw new Error('cxTranslate.loadFile function error: No file properly configured to be loaded');
                     }
+                    /*else {
+                        throw new Error('cxTranslate.loadFile function error: No file properly configured to be loaded');
+                    }*/
                 };
                  
                 return $translate;
