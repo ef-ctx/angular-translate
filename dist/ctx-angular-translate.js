@@ -216,7 +216,7 @@
             });
           }
           $scope.fallbackValue = $element.html();
-          $scope.$watch('translate', translate);
+          $scope.$watch('translate', translate, true);
           $scope.$watch('interpolateParams', translate, true);
           translate();
         }
